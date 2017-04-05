@@ -28,11 +28,15 @@ public class MovieDownloader {
 			return null;
 		}
 
+		//object makes a single request to a specified URL
 		HttpURLConnection urlConnection = null;
+		
+		//reads text from a character-input stream
 		BufferedReader reader = null;
 
 		String[] movies = null;
 
+		//attemps everything in the try block, in the case of any errors or exceptions, control is passed to the catch block 
 		try {
 
 			URL url = new URL(urlString);
@@ -41,6 +45,7 @@ public class MovieDownloader {
 			urlConnection.setRequestMethod("GET");
 			urlConnection.connect();
 
+			//used to read from some input 
 			InputStream inputStream = urlConnection.getInputStream();
 			StringBuffer buffer = new StringBuffer();
 			if (inputStream == null) {
@@ -86,6 +91,7 @@ public class MovieDownloader {
 
 	public static void main(String[] args) 
 	{
+		//text scanner which can parse primitive types and strings using regular expressions 
 		Scanner sc = new Scanner(System.in);
 
 		boolean searching = true;
