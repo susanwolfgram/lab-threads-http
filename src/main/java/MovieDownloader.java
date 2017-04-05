@@ -22,6 +22,7 @@ public class MovieDownloader {
 
 		//construct the url for the omdbapi API
 		String urlString = "";
+		//attemps everything in the try block, in the case of any errors or exceptions, control is passed to the catch block 
 		try {
 			urlString = "http://www.omdbapi.com/?s=" + URLEncoder.encode(movie, "UTF-8") + "&type=movie";
 		}catch(UnsupportedEncodingException uee){
@@ -40,12 +41,14 @@ public class MovieDownloader {
 		try {
 
 			URL url = new URL(urlString);
-
+			//opens connection to the URL 
+			//sends a GET request
 			urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setRequestMethod("GET");
 			urlConnection.connect();
 
-			//used to read from some input 
+			//InputStream used to read from some input 
+			//input is the response from the GET request
 			InputStream inputStream = urlConnection.getInputStream();
 			StringBuffer buffer = new StringBuffer();
 			if (inputStream == null) {
@@ -62,6 +65,7 @@ public class MovieDownloader {
 			if (buffer.length() == 0) {
 				return null;
 			}
+			//formats the output to be returned from this method
 			String results = buffer.toString();
 			results = results.replace("{\"Search\":[","");
 			results = results.replace("]}","");
@@ -73,6 +77,7 @@ public class MovieDownloader {
 			return null;
 		} 
 		finally {
+			//severs the url connection
 			if (urlConnection != null) {
 				urlConnection.disconnect();
 			}
@@ -95,7 +100,7 @@ public class MovieDownloader {
 		Scanner sc = new Scanner(System.in);
 
 		boolean searching = true;
-
+		//basic console app which takes in user input and searches the movie database 
 		while(searching) {					
 			System.out.print("Enter a movie name to search for or type 'q' to quit: ");
 			String searchTerm = sc.nextLine().trim();
@@ -103,7 +108,9 @@ public class MovieDownloader {
 				searching = false;
 			}
 			else {
+				//retrieves data
 				String[] movies = downloadMovieData(searchTerm);
+				//prints retrived data
 				for(String movie : movies) {
 					System.out.println(movie);
 				}
